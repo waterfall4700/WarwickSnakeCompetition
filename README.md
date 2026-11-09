@@ -1,0 +1,221 @@
+# 🐍 Warwick AI Snake Competition 🏆
+
+<div align="center">
+
+<img width="452" height="449" alt="snakebr" src="https://github.com/user-attachments/assets/b60db513-3873-4d71-a567-10dcb9d06f86" />
+
+### 🎮 **Welcome to the first ever WAI AI Programming Competition!** 🎮
+
+[![Competition Status](https://img.shields.io/badge/Status-Active-brightgreen)](https://warwick.ai)
+[![Week](https://img.shields.io/badge/Deadline-Week%209%20Term%201-orange)](https://warwick.ai)
+[![Prize](https://img.shields.io/badge/Prize-£50%20Tesco%20Voucher-gold)](https://warwick.ai)
+
+</div>
+
+---
+
+Hello all and welcome to the first ever Warwick AI programming competition!
+
+Don't worry if you're new to programming or AI, there's something here for everyone! For beginners, check out the WAI + Code Soc + UWCS Python course or ask us anything at our weekly code nights. See our [website](https://warwick.ai) for details.
+
+### 🎯 Competition Highlights
+
+- 🗺️ **Format:** Squad up in teams of any size!
+- 🧠 **Duration:** Running officially till week 9 of term 1
+- 💰 **Prize:** The winning team will receive a £50 Tesco Voucher + eternal WAI glory
+- 📊 **Leaderboard:** Live updates on our website throughout the competition
+- 🏆 **Final Testing:** We'll do thorough testing for final results
+
+### 📝 Contributing
+
+🤖 We want this repository to become place where future members can explore a variety of AI implementations and archetypes. 
+
+❤️ Once the competition is over, we'd love to accept any and all creations as open source contributions! Your AI might even be used as a baseline for scoring future submissions!
+
+✍️ Also, this is a also new project with room for improvement. If you have ideas or suggestions:
+- ✉️ Message us directly
+- 🚨 Send a pull request with your changes
+
+Open source contributions are great practice and go an long way on a CV!
+
+## 🛠️ Environment Setup
+
+### Using the Template
+
+### 1️⃣ Step 1 - Login on our Website
+First, login on our website https://warwick.ai with your GitHub account!  Don't worry if you forget, logging in later won't break anything :)
+
+### 2️⃣ Step 2 - Copy the Template
+Next, use this template repository to create you own by pressing `Use this template`:      ⬇️
+
+<img alt="template" src="https://github.com/user-attachments/assets/b05ccea8-bb53-4eed-ad5a-2de0b3a15b1d" />
+
+This button is in the top right of the page. You will be prompted to give it a name and choose for it to be public/private. These setting are completely up to you and won't affect anything :)
+
+### 3️⃣ Step 3 - Enable the WAI GitHub App
+Then, go to https://github.com/apps/warwickai and press install/configure to authorise the app to view your repository.
+
+This is what allows us to send your score to the leaderboard!
+
+<img width="452" height="170" alt="ghapp" src="https://github.com/user-attachments/assets/952fad17-b664-457f-982b-50cb5e42896a" />
+
+### 4️⃣ Step 4 - Installing Dependencies
+Open your project's repository in a terminal and install the required dependencies:
+
+```bash
+# Create virtual environment
+python -m venv .venv
+
+# Activate it
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+
+# Install dependencies
+pip install -e .
+```
+
+With this done, submitting is as easy as pushing a commit to your repository!
+
+### Alternatives
+If you don't have a development environment set up, an alternative is making a github codespace:
+
+<img width="452" height="431" alt="codespaces" src="https://github.com/user-attachments/assets/750288fb-c6ad-4602-9f36-08f53f8eaed2" />
+
+Please note, `snake run` will not work from a github codespace, instead the code must be run locally.
+
+---
+
+## 🎯 Running the Game
+
+### Available Commands
+
+#### 📋 List all difficulties
+```bash
+snake list
+```
+
+#### 👀 Watch your AI play
+```bash
+snake run easy
+snake run hard
+```
+
+#### ⚡ Run headless tests
+```bash
+snake test 100 medium
+snake test 50 all  # cycles through every difficulty
+```
+
+#### 🤖 Train a reinforcement learning agent
+```bash
+snake train easy
+snake train easy --resume  # keep training the model you already have
+```
+
+#### 🎲 Deterministic testing
+```bash
+snake run hard --seed 123
+snake test 100 hard --seed 69
+```
+
+---
+
+## 🧠 Writing Your AI
+
+### The Basics
+Your submission is the `myAI` function in `myAI.py`:
+
+```python
+def myAI(state: GameState) -> Turn:
+    # Your brilliant strategy here!
+    return Turn.LEFT  # or Turn.STRAIGHT or Turn.RIGHT
+```
+
+Your AI function should use the current state of the game `state` and ouput one of `Turn.LEFT`, `Turn.RIGHT` or `Turn.STRAIGHT`.
+
+The turn you choose will make your snake turn left, right or stay straight before moving. 
+
+### Some Inspiration
+
+There's all sorts of ways to write an AI for this competition:
+- Rules/heuristics
+- Search algorithms
+- [Reinforcement learning](#-reinforcement-learning)
+- and much more!
+
+---
+
+## 🤖 Reinforcement Learning
+
+Rather than writing the rules yourself, you can train a snake to work them out. The project ships a [Gymnasium](https://gymnasium.farama.org/) environment and a [Stable Baselines 3](https://stable-baselines3.readthedocs.io/) training loop, so it's one extra command.
+
+Everything you edit is in **`myEnv.py`**: `observe`, `step`, `reset`, `observation_space` - a real Gymnasium environment. Leave the plumbing at the bottom alone. `play_turn()` moves the snakes exactly as the scorer does, and changing it means training against a different game to the one you're scored on.
+
+### 1️⃣ Install
+
+Uncomment these two lines in `pyproject.toml`, then re-run `pip install -e .`:
+
+```toml
+    # "gymnasium>=1.0",
+    # "stable-baselines3>=2.4",
+```
+
+> ⚠️ **Don't skip this.** The scorer installs whatever is in **your** `pyproject.toml`. Leave them commented and your trained snake won't run, so you won't get a score.
+
+### 2️⃣ Train
+
+```bash
+snake train easy
+```
+
+Watch **`ep_rew_mean`** in the table that prints — your average reward per game. Climbing means it's learning. The model saves to `model.zip`.
+
+```bash
+snake train easy --steps 50000  # ~5s smoke test (the snake will still be awful)
+snake train easy --resume       # keep training the model you already have
+```
+
+### 3️⃣ Play
+
+Uncomment the two `rlAI` lines in `myAI.py`:
+
+```python
+    from examples.rlAI import rlAI
+    return rlAI(state)
+```
+
+Then `snake run easy` to watch it and `snake test 100 easy` to score it.
+
+### 4️⃣ Submit
+
+Commit `model.zip` along with your code and push. It's scored like any other submission.
+
+---
+
+## 🏆 Submitting you AI
+
+🐐 To submit your AI, simply push a commit to your repository. 
+
+🧪 This will run some automated tests and your score will automatically appear on the website! <https://warwick.ai>
+
+---
+
+## 🚨 Important
+
+Don't change anything in the snake folder as the submission tests use this code!
+
+Other than this, have fun and see you at code nights! 
+
+---
+
+### Need Help?
+- 📅 Weekly code nights
+- 🌐 Visit [warwick.ai](https://warwick.ai)
+- 💬 Message us with questions
+
+---
+
+<div align="center">
+
+### 🏆 **Good luck and may the best snake win!** 🏆
+
+</div>
